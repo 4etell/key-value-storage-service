@@ -2,6 +2,7 @@ package com.foretell.kvpstorageservice.service.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.foretell.kvpstorageservice.data.StoringData;
 import com.foretell.kvpstorageservice.service.StorageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -167,32 +168,7 @@ public class StorageServiceImpl implements StorageService {
         }
     }
 
-    private class StoringData {
-        private Object value;
-        private long stampTtl;
-
-        public StoringData() {
-        }
-
-        public StoringData(Object value, long stampTtl) {
-            this.value = value;
-            this.stampTtl = stampTtl;
-        }
-
-        public Object getValue() {
-            return value;
-        }
-
-        public long getStampTtl() {
-            return stampTtl;
-        }
-
-        public void setValue(Object value) {
-            this.value = value;
-        }
-
-        public void setStampTtl(long stampTtl) {
-            this.stampTtl = stampTtl;
-        }
+    public Map<String, StoringData> getStorageMap() {
+        return new HashMap<>(storageMap);
     }
 }
