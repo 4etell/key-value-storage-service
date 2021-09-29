@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class StorageServiceImpl implements StorageService {
-    private Map<String, StoringData> storageMap = new HashMap<>();
+    private static Map<String, StoringData> storageMap = new HashMap<>();
     private Timer timer = new Timer();
     private final Map<String, TimerTask> timerTasks = new HashMap<>();
 
@@ -28,6 +28,11 @@ public class StorageServiceImpl implements StorageService {
 
     @Value("${load.path}")
     private String loadPath;
+
+    @Override
+    public Map<String, StoringData> getStorageMap() {
+        return new HashMap<>(storageMap);
+    }
 
     @Override
     public Object read(String key) {
@@ -168,7 +173,4 @@ public class StorageServiceImpl implements StorageService {
         }
     }
 
-    public Map<String, StoringData> getStorageMap() {
-        return new HashMap<>(storageMap);
-    }
 }
