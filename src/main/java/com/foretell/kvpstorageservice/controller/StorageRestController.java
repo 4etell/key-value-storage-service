@@ -6,23 +6,15 @@ import com.foretell.kvpstorageservice.service.StorageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Map;
 
 @RestController
@@ -94,7 +86,6 @@ public class StorageRestController {
                     @ApiResponse(responseCode = "404", description = "Could not find value by this key")
             }
     )
-
     @DeleteMapping("{key}")
     public Object removeValue(@PathVariable String key,
                               HttpServletResponse response) {
@@ -109,28 +100,5 @@ public class StorageRestController {
 
         return value;
 
-    }
-
-    @Operation(summary = "Load file, which dumped by /api/dump method")
-    @PostMapping("load")
-    public void load(@RequestPart MultipartFile file,
-                     HttpServletResponse response) {
-        if (storageService.load(file)) {
-            response.setStatus(HttpServletResponse.SC_OK);
-        } else {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        }
-    }
-
-    @Operation(summary = "Dump storage in json file")
-    @GetMapping("dump")
-    public ResponseEntity<InputStreamResource> dump() throws IOException {
-
-        File file = storageService.dump();
-        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
-
-        return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .body(resource);
     }
 }
